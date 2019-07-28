@@ -1,9 +1,9 @@
 import * as PlayerActionTypes from '../actiontypes/player';
 
-const initialState = [
-    {
+const initialState = {
+    players: [{
         name: 'Jim Hoskins',
-        score: 31,
+      score: 31,
     },
     {
         name: 'Andrew Chalkley',
@@ -12,10 +12,12 @@ const initialState = [
     {
         name: 'Alena Holligan',
         score: 50,
-    },
-];
+    }
+    ]
+}
 
-export default function Player(state = initialState, action) {
+export default function Player(state=initialState, action) {
+    console.log(state);
     switch(action.type) {
         case PlayerActionTypes.ADD_PLAYER:
             return [
