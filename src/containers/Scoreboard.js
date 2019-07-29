@@ -1,27 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
-import * as PlayerActionCreators from '../actions/player';
 import { connect } from 'react-redux';
-import AddPlayerForm from '../components/AddPlayerForm';
-import Player from '../components/Player';
+import * as PlayerActionCreators from '../actions/player';
 import Header from '../components/Header';
+import Player from '../components/Player';
+import AddPlayerForm from '../components/AddPlayerForm';
+import PlayerDetail from '../components/PlayerDetail';
 
-class Scoreboard extends Component {  
-
-  static PropTypes = {
+class Scoreboard extends Component {
+  static propTypes = {
     players: PropTypes.array.isRequired
-  };  
+  };
 
-render() {
+  render() {
+    const { dispatch, players } = this.props;
+    const addPlayer = bindActionCreators(PlayerActionCreators.addPlayer, dispatch);
+    const removePlayer = bindActionCreators(PlayerActionCreators.removePlayer, dispatch);
+    const updatePlayerScore = bindActionCreators(PlayerActionCreators.updatePlayerScore, dispatch);
 
-  const { dispatch, players } = this.props;
-  const addPlayer = bindActionCreators(PlayerActionCreators.addPlayer, dispatch);
-  const removePlayer = bindActionCreators(PlayerActionCreators.removePlayer, dispatch);
-  const updatePlayerScore = bindActionCreators(PlayerActionCreators.updatePlayerScore, dispatch);
-
-  const playerComponents = players.map((player, index) => {
-    return (
+    const playerComponents = players.map((player, index) => (
       <Player
         index={index}
         name={player.name}
@@ -30,20 +27,22 @@ render() {
         updatePlayerScore={updatePlayerScore}
         removePlayer={removePlayer}
       />
-    );
-  });
-
-  return (
-    <div className="scoreboard">
-      <Header players={players} />
-      <div className="players">
-        { playerComponents }
+    ));
+    return (
+      <div className="scoreboard">
+        <Header players={players} />
+        <div className="players">
+          { playerComponents }
         </div>
-      <AddPlayerForm addPlayer={addPlayer} />
-    </div>
+        <AddPlayerForm addPlayer={addPlayer} />
+        
+        <div className="player-detail">
+          <PlayerDetail />
+        </div>
+      </div>
     );
   }
-};
+}
 
 const mapStateToProps = state => (
   {
