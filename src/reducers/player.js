@@ -24,11 +24,15 @@ const initialState = {
 }
 
 export default function Player(state=initialState, action) {
+    let date = new Date();
+    let time = new Date(date).toLocaleTimeString("en-US");
     switch(action.type){
         case PlayerActionTypes.ADD_PLAYER: {
             const addPlayerList = [...state.players,   {
             name: action.name,
-            score: 0
+            score: 0,
+            created: time,
+            updated: 'N/A'
         }];
         return {
             ...state,
@@ -52,7 +56,8 @@ export default function Player(state=initialState, action) {
             if(index === action.index){
             return {
               ...player,
-               score: player.score + action.score
+               score: player.score + action.score,
+               updated: time
              };
           }
           return player;
@@ -61,6 +66,12 @@ export default function Player(state=initialState, action) {
                   ...state,
                   players: updatePlayerList
               };
+        }
+        case PlayerActionTypes.SELECT_PLAYER: {
+          return {
+            ...state,
+            selectedPlayerIndex: action.index
+          }
         }
       default:
         return state;

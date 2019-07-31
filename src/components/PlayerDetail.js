@@ -1,22 +1,19 @@
 import React, { PropTypes } from 'react';
 
-const PlayerDetail = ({  }) => {
-  if( ){
+const PlayerDetail = ({ players, selectedPlayer } = this.props) => {
+  if(selectedPlayer > -1){
     return (
       <div>
-        <h3>{ }</h3>
+        <h3>{ players[selectedPlayer].name }</h3>
         <ul>
           <li>
-            <span>Score: </span> 
-            { }
+            <span>Score: { players[selectedPlayer].score }</span> 
           </li>
           <li>
-            <span>Created: </span> 
-            { }
+            <span>Created: { players[selectedPlayer].created }</span> 
           </li>
           <li>
-            <span>Updated: </span> 
-            { }
+            <span>Updated: {players[selectedPlayer].updated }</span>
           </li>        
         </ul>
       </div>
@@ -27,5 +24,12 @@ const PlayerDetail = ({  }) => {
   }
 };
 
+PlayerDetail.propTypes = {
+  // name: PropTypes.string.isRequired,
+  // score: PropTypes.number.isRequired,
+  // created: PropTypes.string.isRequired,
+  // updated: PropTypes.string.isRequired,
+  selectedPlayer: PropTypes.number.isRequired,
+};
 
 export default PlayerDetail;

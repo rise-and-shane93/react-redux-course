@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as PlayerActionCreators from '../actions/player';
@@ -8,15 +9,17 @@ import AddPlayerForm from '../components/AddPlayerForm';
 import PlayerDetail from '../components/PlayerDetail';
 
 class Scoreboard extends Component {
-  static propTypes = {
-    players: PropTypes.array.isRequired
+  static PropTypes = {
+    players: PropTypes.array.isRequired,
+    selectedPlayer: PropTypes.number.isRequired
   };
 
   render() {
-    const { dispatch, players } = this.props;
+    const { dispatch, players, selectedPlayer } = this.props;
     const addPlayer = bindActionCreators(PlayerActionCreators.addPlayer, dispatch);
     const removePlayer = bindActionCreators(PlayerActionCreators.removePlayer, dispatch);
     const updatePlayerScore = bindActionCreators(PlayerActionCreators.updatePlayerScore, dispatch);
+    const playerDetails = bindActionCreators(PlayerActionCreators.playerDetails, dispatch);
 
     const playerComponents = players.map((player, index) => (
       <Player
@@ -26,8 +29,10 @@ class Scoreboard extends Component {
         key={player.name}
         updatePlayerScore={updatePlayerScore}
         removePlayer={removePlayer}
+        playerDetails={playerDetails}
       />
     ));
+
     return (
       <div className="scoreboard">
         <Header players={players} />
@@ -37,7 +42,10 @@ class Scoreboard extends Component {
         <AddPlayerForm addPlayer={addPlayer} />
         
         <div className="player-detail">
-          <PlayerDetail />
+          <PlayerDetail 
+            selectedPlayer={selectedPlayer}
+            players={players}
+          />
         </div>
       </div>
     );
@@ -46,7 +54,8 @@ class Scoreboard extends Component {
 
 const mapStateToProps = state => (
   {
-    players: state.players
+    players: state.players,
+    selectedPlayer: state.selectedPlayerIndex
   }
 );
 
